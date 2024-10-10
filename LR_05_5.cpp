@@ -1,37 +1,32 @@
-#include <cmath> 
-#include <iostream>
-
+п»ї#include <iostream>
 using namespace std;
 
-static double nextTerm(double a_n_minus_1) {
-	return (1.0 / 3.0) * (2 * a_n_minus_1 + (8.0 / (a_n_minus_1 * a_n_minus_1)));
-}
 
-static double recursiveConvergence(double a_n, double eps, int& iterations) {
-	double a_n_next = nextTerm(a_n);
+double a_n(int n, int level, int& depth) {
+    if (level > depth)
+        depth = level;
+
+    cout << "Current recursion level: " << level << endl;
 
 
-	if (fabs(a_n_next - a_n) < eps) 
-	{
-		return a_n_next;
-	}
+    if (n == 1)
+        return 1.0;
 
-	iterations++;
 
-	return recursiveConvergence(a_n_next, eps, iterations);
+    double previos = a_n(n - 1, level + 1, depth);
+    return (1.0 / 3) * (2 * previos + 8.0 / previos);
 }
 
 int main() {
-	double a_n = 1.0;
+    int n;
+    cout << "Enter the value of n: ";
+    cin >> n;
 
-	// - Похибка - //
-	const double eps = 0.00001;
-	int NumberOfIterations = 0;
+    int depth = 0;
+    double result = a_n(n, 1, depth);
 
-	// Call the recursive function
-	double result = recursiveConvergence(a_n, eps, NumberOfIterations);
+    cout << "The result a_" << n << " = " << result << endl;
+    cout << "The depth of recursion was: " << depth << endl;
 
-	cout << "The sequence converged to: " << result << " after " << NumberOfIterations << " iterations." << endl;
-
-	return 0;
+    return 0;
 }
